@@ -2,18 +2,7 @@ import requests
 import json
 import os
 
-# from pypushdeer import PushDeer # 使用push plus，不用pushdeer
-import requests
- 
-def send_wechat(token, title, msg):
-    token = token
-    title = title
-    content = msg
-    template = 'html'
-    url = f"https://www.pushplus.plus/send?token={token}&title={title}&content={content}&template={template}"
-    print(url)
-    r = requests.get(url=url)
-    print(r.text)
+from pypushdeer import PushDeer
 
 # -------------------------------------------------------------------------------------------
 # github workflows
@@ -89,8 +78,7 @@ if __name__ == '__main__':
             context += "账号: " + email + ", P: " + str(points) +", 剩余: " + message_days + " | "
 
         # 推送内容 
-        # title = f'Glados, 成功{success},失败{fail},重复{repeats}'
-        title = message_status
+        title = f'Glados, 成功{success},失败{fail},重复{repeats}'
         print("Send Content:" + "\n", context)
         
     else:
@@ -105,6 +93,5 @@ if __name__ == '__main__':
     if not sckey:
         print("Not push")
     else:
-        send_wechat(sckey, title, context)
-        # pushdeer = PushDeer(pushkey=sckey) 
-        # pushdeer.send_text(title, desp=context)
+        pushdeer = PushDeer(pushkey=sckey) 
+        pushdeer.send_text(title, desp=context)
